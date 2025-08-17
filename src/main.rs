@@ -8,6 +8,7 @@ mod text;
 mod io;
 mod port;
 mod opn;
+mod rng;
 mod util;
 mod video;
 
