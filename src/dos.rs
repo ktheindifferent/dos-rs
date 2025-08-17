@@ -31,10 +31,10 @@ pub fn get_keyboard_input() -> u8 {
             "int 16h",
             "mov al, ah",
             "xor ah, ah",
-            "jmp 2f",
-            "1:",
-            "xor ax, ax",
+            "jmp 3f",
             "2:",
+            "xor ax, ax",
+            "3:",
             out("al") code,
         );
     }
