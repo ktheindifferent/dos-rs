@@ -27,14 +27,11 @@ pub mod cp437 {
 
         let code_point = character as usize;
         // Take the fast path for characters in printable ASCII.
-        if code_point >= 0x20 && code_point <= 0x7E {
+        if (0x20..=0x7E).contains(&code_point) {
             Some(code_point as u8)
         // Otherwise do a table lookup.
         } else {
-            match CP437_TABLE.iter().position(|&c| c == character) {
-                None => None,
-                Some(value) => Some(value as u8)
-            }
+            CP437_TABLE.iter().position(|&c| c == character).map(|value| value as u8)
         }
     }
 

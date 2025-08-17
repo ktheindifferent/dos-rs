@@ -1,6 +1,11 @@
 #![allow(unused_assignments)] 
 use core::arch::asm;
 
+/// Reads a byte from the specified I/O port.
+///
+/// # Safety
+///
+/// Direct hardware access - caller must ensure the port is valid.
 #[inline(always)]
 pub unsafe fn inb(port: u16) -> u8 {
     let value;
@@ -13,6 +18,7 @@ pub unsafe fn inb(port: u16) -> u8 {
 }
 
 #[inline(always)]
+#[allow(dead_code)]
 pub unsafe fn inw(port: u16) -> u16 {
     let value;
     asm!(
@@ -24,6 +30,7 @@ pub unsafe fn inw(port: u16) -> u16 {
 }
 
 #[inline(always)]
+#[allow(dead_code)]
 pub unsafe fn inl(port: u16) -> u32 {
     let value;
     asm!(
@@ -34,6 +41,11 @@ pub unsafe fn inl(port: u16) -> u32 {
     value
 }
 
+/// Writes a byte to the specified I/O port.
+///
+/// # Safety
+///
+/// Direct hardware access - caller must ensure the port is valid.
 #[inline(always)]
 pub unsafe fn outb(port: u16, value: u8) {
     asm!(
@@ -44,6 +56,7 @@ pub unsafe fn outb(port: u16, value: u8) {
 }
 
 #[inline(always)]
+#[allow(dead_code)]
 pub unsafe fn outw(port: u16, value: u16) {
     asm!(
         "out dx, ax",
@@ -53,6 +66,7 @@ pub unsafe fn outw(port: u16, value: u16) {
 }
 
 #[inline(always)]
+#[allow(dead_code)]
 pub unsafe fn outl(port: u16, value: u32) {
     asm!(
         "out dx, eax",

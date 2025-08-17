@@ -1,5 +1,10 @@
 use core::arch::asm;
 
+/// Generates a pseudo-random 16-bit number using a linear feedback shift register.
+///
+/// # Returns
+///
+/// A pseudo-random u16 value
 pub fn random() -> u16 {
     let value;
     unsafe {
@@ -24,6 +29,9 @@ pub fn random() -> u16 {
     }
 }
 
+/// Seeds the random number generator using the system timer.
+///
+/// Uses BIOS interrupt 1Ah to get the current tick count for seeding.
 pub fn seed_random() {
     unsafe {
         asm!(
