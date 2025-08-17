@@ -13,6 +13,14 @@ mod util;
 mod video;
 mod test_boxes;
 
+/// Entry point for the DOS executable.
+///
+/// # Safety
+///
+/// This function is unsafe because it:
+/// - Is called directly by the DOS loader with undefined initial state
+/// - Performs direct hardware manipulation through inline assembly
+/// - Assumes a DOS environment with appropriate interrupt handlers
 #[no_mangle]
 pub unsafe extern "C" fn start() {
     util::seed_random();
@@ -25,6 +33,9 @@ pub unsafe extern "C" fn start() {
     test_boxes::test_boxes();
     
     video::show_mouse();
+    
+    // Test code for random pixel plotting - kept for debugging graphics routines
+    // Uncomment to test pixel plotting performance and random number generation
     // for i in 0..10000 {
     //     let x: u16 = util::random() as u16 % 320;
     //     let y: u16 = util::random() as u16 % 200;

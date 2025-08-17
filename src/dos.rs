@@ -1,5 +1,10 @@
 use core::arch::asm;
 
+/// Prints a null-terminated string using DOS interrupt 21h.
+///
+/// # Arguments
+///
+/// * `s` - Pointer to a null-terminated string
 pub fn print(s: *const u8) {
     unsafe {
         asm!(
@@ -10,6 +15,11 @@ pub fn print(s: *const u8) {
     }
 }
 
+/// Prints a single character to the screen using DOS interrupt 21h.
+///
+/// # Arguments
+///
+/// * `c` - The character to print
 pub fn print_character(c: u8) {
     unsafe {
         asm!(
@@ -20,6 +30,11 @@ pub fn print_character(c: u8) {
     }
 }
 
+/// Gets keyboard input without blocking.
+///
+/// # Returns
+///
+/// The scan code of the pressed key, or 0 if no key is pressed
 pub fn get_keyboard_input() -> u8 {
     let code;
     unsafe {
@@ -41,6 +56,11 @@ pub fn get_keyboard_input() -> u8 {
     code
 }
 
+/// Sets the video mode using BIOS interrupt 10h.
+///
+/// # Arguments
+///
+/// * `mode` - The video mode to set (e.g., 0x03 for text, 0x13 for VGA graphics)
 pub fn set_video_mode(mode: u8) {
     unsafe {
         asm!(
@@ -50,6 +70,7 @@ pub fn set_video_mode(mode: u8) {
     }
 }
 
+/// Exits the program and returns to DOS.
 pub fn exit() {
     unsafe {
         asm!(
@@ -59,8 +80,13 @@ pub fn exit() {
     }
 }
 
-// Immediately shuts down the computer
-// Notes: Tested and working (2022)
+/// Immediately shuts down the computer using APM.
+///
+/// # Safety
+///
+/// This function performs a hard system shutdown.
+/// Notes: Tested and working (2022)
+#[allow(dead_code)]
 pub fn shutdown() {
     unsafe {
         asm!("mov ax, 0x1000"); 
