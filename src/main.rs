@@ -11,17 +11,19 @@ mod opn;
 mod rng;
 mod util;
 mod video;
+mod test_boxes;
 
 #[no_mangle]
 pub unsafe extern "C" fn start() {
     util::seed_random();
     dos::set_video_mode(0x13);
 
-    let bg_color: u8 = util::random() as u8 % 255;
-    let color: u8 = util::random() as u8 % 255;
-
-    video::fill_screen(bg_color);
-    video::draw_box(0, 0, 319, 10, color);
+    // Clear screen with a background color
+    video::fill_screen(0);
+    
+    // Run comprehensive box drawing tests
+    test_boxes::test_boxes();
+    
     video::show_mouse();
     // for i in 0..10000 {
     //     let x: u16 = util::random() as u16 % 320;

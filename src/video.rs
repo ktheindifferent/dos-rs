@@ -30,24 +30,28 @@ pub fn plot_pixel(x: u16, y: u16, color: u8) {
 }
 
 pub fn draw_box(x: u16, y: u16, w: u16, h: u16, color: u8) {
-    // Box Left Wall
-    for i in x..(x+h) {
-        plot_pixel(x, i, color)
+    // Parameter validation to prevent overflow
+    let max_x = x.saturating_add(w);
+    let max_y = y.saturating_add(h);
+    
+    // Left wall: x constant, y varies
+    for i in y..=max_y {
+        plot_pixel(x, i, color);
     }
-
-    // Box Top Wall
-    for i in x..(x+w) {
-        plot_pixel(i, y, color)
+    
+    // Top wall: y constant, x varies
+    for i in x..=max_x {
+        plot_pixel(i, y, color);
     }
-
-    // Box Bottom Wall
-    for i in x..(x+w) {
-        plot_pixel(i, (y+h), color)
+    
+    // Right wall: x+w constant, y varies
+    for i in y..=max_y {
+        plot_pixel(max_x, i, color);
     }
-
-    // Box Right Wall
-    for i in x..(x+h) {
-        plot_pixel((x + w), i, color)
+    
+    // Bottom wall: y+h constant, x varies
+    for i in x..=max_x {
+        plot_pixel(i, max_y, color);
     }
 }
 
