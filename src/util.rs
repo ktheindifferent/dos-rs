@@ -16,9 +16,7 @@ pub fn random() -> u16 {
             "xor ax, bx",
             "mov [11h], ax",
             out("ax") value,
-            out("bx") _,
-            out("cx") _,
-            out("dx") _,
+            options(nostack),
         );
         value
     }

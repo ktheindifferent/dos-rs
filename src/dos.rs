@@ -26,15 +26,15 @@ pub fn get_keyboard_input() -> u8 {
         asm!(
             "mov ah, 01h",
             "int 16h",
-            "jz 1f",
+            "jz 2f",
             "mov ah, 00h",
             "int 16h",
             "mov al, ah",
             "xor ah, ah",
-            "jmp 2f",
-            "1:",
-            "xor ax, ax",
+            "jmp 3f",
             "2:",
+            "xor ax, ax",
+            "3:",
             out("al") code,
         );
     }
