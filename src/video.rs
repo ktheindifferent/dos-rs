@@ -19,11 +19,12 @@ pub fn fill_screen(color: u8) {
 pub fn plot_pixel(x: u16, y: u16, color: u8) {
     unsafe {
         asm!(
+            "xor bx, bx",  // Clear BX register (BH = 0 for page 0)
             "int 10h",
             in("ax") (0x0C00u16) | (color as u16),
-            in("bh") 0u8,
             in("cx") x,
             in("dx") y,
+            options(nostack),
         );
     }
 }
