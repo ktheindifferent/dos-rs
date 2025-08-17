@@ -1,46 +1,26 @@
-use core::arch::asm;
+use crate::rng::GlobalRng;
 
-/// Generates a pseudo-random 16-bit number using a linear feedback shift register.
-///
-/// # Returns
-///
-/// A pseudo-random u16 value
+/// Generate a random 16-bit number using the global RNG
+/// 
+/// This function uses the safer RNG implementation that avoids
+/// hardcoded memory addresses and provides better documentation.
 pub fn random() -> u16 {
-    let value;
-    unsafe {
-        asm!(
-            "mov bx, [11h]",
-            "mov ax, bx",
-            "shl bx, 7",
-            "xor ax, bx",
-            "mov bx, ax",
-            "shr bx, 9",
-            "xor ax, bx",
-            "mov bx, ax",
-            "shl bx, 8",
-            "xor ax, bx",
-            "mov [11h], ax",
-            out("ax") value,
-            out("bx") _,
-            out("cx") _,
-            out("dx") _,
-        );
-        value
-    }
+    GlobalRng::random()
 }
 
-/// Seeds the random number generator using the system timer.
-///
-/// Uses BIOS interrupt 1Ah to get the current tick count for seeding.
+/// Seed the random number generator using the system timer
+/// 
+/// This function uses DOS interrupt 0x1A to get the timer tick count
+/// for backwards compatibility. For better entropy, consider using
+/// `seed_random_improved()` which uses DOS interrupt 0x2C.
 pub fn seed_random() {
-    unsafe {
-        asm!(
-            "int 1ah",
-            "mov [11h], dx",
-            "xor dx, dx",
-            inout("ax") 0 => _,
-            inout("cx") 0 => _,
-            out("dx") _,
-        );
-    }
+    GlobalRng::seed_from_timer()
+}
+
+/// Seed the random number generator using system time for better entropy
+/// 
+/// This function uses DOS interrupt 0x2C which provides hour, minute,
+/// second, and hundredths of second values for better seed quality.
+pub fn seed_random_improved() {
+    GlobalRng::seed_from_system_time()
 }

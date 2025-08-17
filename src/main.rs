@@ -8,8 +8,10 @@ mod text;
 mod io;
 mod port;
 mod opn;
+mod rng;
 mod util;
 mod video;
+mod test_boxes;
 
 /// Entry point for the DOS executable.
 ///
@@ -24,11 +26,12 @@ pub unsafe extern "C" fn start() {
     util::seed_random();
     dos::set_video_mode(0x13);
 
-    let bg_color: u8 = util::random() as u8 % 255;
-    let color: u8 = util::random() as u8 % 255;
-
-    video::fill_screen(bg_color);
-    video::draw_box(0, 0, 319, 10, color);
+    // Clear screen with a background color
+    video::fill_screen(0);
+    
+    // Run comprehensive box drawing tests
+    test_boxes::test_boxes();
+    
     video::show_mouse();
     
     // Test code for random pixel plotting - kept for debugging graphics routines
